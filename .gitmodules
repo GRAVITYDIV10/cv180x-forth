@@ -1,0 +1,6 @@
+[submodule "fsbl"]
+	path = fsbl
+	url = https://github.com/sophgo/fsbl
+[submodule "build"]
+	path = build
+	url = https://github.com/sophgo/build
