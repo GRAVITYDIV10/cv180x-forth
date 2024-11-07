@@ -53,10 +53,64 @@ reset:
 	li xp, 0x7F
 	bne xp, wp, 1b
 
+	call c906l_enter_reset
+	la wp, c906l_reset
+	call c906l_set_entry
+	call c906l_leave_reset
+
+1:
+	j 1b
+
+
+c906l_reset:
+	.section .rodata
+msg_c906l_boot:
+	.asciz "\n\rC906L START\n\r"
+	.p2align 2, 0x0
+	.section .text
+	la wp, msg_c906l_boot
+	call early_puts
+
 1:
 	call early_getc
 	call early_putc
 	j 1b
+
+
+	.equ RSTN_BASE, 0x03003000
+	.equ RSTN_SOFT_CPU, 0x24
+	.equ RSTN_C906L, (1 << 6)
+c906l_enter_reset:
+	li wp, RSTN_BASE
+	lw xp, RSTN_SOFT_CPU(wp)
+	li yp, RSTN_C906L
+	xori yp, yp, -1
+	and xp, xp, yp
+	sw xp, RSTN_SOFT_CPU(wp)
+	ret
+
+c906l_leave_reset:
+	li wp, RSTN_BASE
+        lw xp, RSTN_SOFT_CPU(wp)
+        ori xp, xp, RSTN_C906L
+        sw xp, RSTN_SOFT_CPU(wp)
+        ret
+
+	.equ SEC_SYS_BASE, 0x020B0000
+	.equ SEC_SYS_C906L_ENTRY_LOW, 0x20
+	.equ SEC_SYS_C906L_ENTRY_HIGH, 0x24
+c906l_set_entry:
+	li xp, SEC_SYS_BASE
+
+	# no doc
+	lw yp, 0x4(xp)
+	li zp, (1 << 13)
+	or yp, yp, zp
+	sw yp, 0x4(xp)
+
+	sw wp, SEC_SYS_C906L_ENTRY_LOW(xp)
+	sw zero, SEC_SYS_C906L_ENTRY_HIGH(xp)
+	ret
 
 early_putc:
 	li xp, UART0_BASE
