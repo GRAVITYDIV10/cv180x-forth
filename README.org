@@ -1,0 +1,13 @@
+* FORTH on CVITEK CV180X
+
+* build & flash
+
+not need tfcard, connect usb cable to computer, then run command:
+
+#+BEGIN_SRC shell
+make
+#+END_SRC
+
+* license
+
+mit
