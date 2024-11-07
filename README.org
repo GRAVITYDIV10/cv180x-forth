@@ -2,11 +2,28 @@
 
 * build & flash
 
-not need tfcard, connect usb cable to computer, then run command:
+without tfcard, use usb cable download:
+
+#+BEGIN_SRC text
+[ LED  TYPEC ] VBUS
+[            ] VSYS
+[            ] GND
+[            ] 3V3_EN
+[            ] 3V3_OUT---4.7k resistor----\
+[            ] NOP                        |
+[  MILKV DUO ] NOP                        |
+[            ] VBUS_DET-------------------/
+#+END_SRC
+
+connect usb cable to computer, then run command:
 
 #+BEGIN_SRC shell
 make
 #+END_SRC
+
+* connect
+
+uart0 baudrate 115200
 
 * license
 
