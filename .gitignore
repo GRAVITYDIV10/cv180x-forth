@@ -2,3 +2,9 @@
 *.bin
 *.elf
 *.dis
+*.o
+*.lst
+*.hex
+*.ihx
+*.rel
+*.sym
